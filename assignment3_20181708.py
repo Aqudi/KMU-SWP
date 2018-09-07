@@ -33,6 +33,12 @@ def doScoreDB(scdb):
         if inputstr == "": continue
         parse = inputstr.split(" ")
         if parse[0] == 'add':
+            try:
+                parse[2] = int(parse[2])
+                parse[3] = int(parse[3])
+            except:
+                print("Age and Score should be integer")
+                continue
             record = {'Name':parse[1], 'Age':parse[2], 'Score':parse[3]}
             scdb += [record]
         elif parse[0] == 'del':
@@ -52,7 +58,7 @@ def doScoreDB(scdb):
 def showScoreDB(scdb, keyname):
     for p in sorted(scdb, key=lambda person: person[keyname]):
         for attr in sorted(p):
-            print(attr + "=" + p[attr], end=' ')
+            print(attr + "=" + str(p[attr]), end=' ')
         print()
 
 
