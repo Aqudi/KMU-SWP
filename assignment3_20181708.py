@@ -1,6 +1,6 @@
 import pickle
 
-dbfilename = 'test3_4.dat'
+dbfilename = 'assignment3.dat'
 
 def readScoreDB():
     try:
@@ -11,7 +11,7 @@ def readScoreDB():
 
     scdb = []
     try:
-        scdb =  pickle.load(fH)
+        scdb = pickle.load(fH)
     except:
         print("Empty DB: ", dbfilename)
     else:
