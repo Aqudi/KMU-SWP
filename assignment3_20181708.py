@@ -33,18 +33,22 @@ def doScoreDB(scdb):
         if inputstr == "": continue
         parse = inputstr.split(" ")
         if parse[0] == 'add':
-            try:
-                parse[2] = int(parse[2])
-                parse[3] = int(parse[3])
-            except:
-                print("Age and Score should be integer")
-                continue
-            record = {'Name':parse[1], 'Age':parse[2], 'Score':parse[3]}
-            scdb += [record]
+            # check if input satisfied format and type of value
+            if len(parse) == 4:
+                try:
+                    parse[2] = int(parse[2])
+                    parse[3] = int(parse[3])
+                except:
+                    print("Age and Score should be integer")
+                    continue
+                record = {'Name':parse[1], 'Age':parse[2], 'Score':parse[3]}
+                scdb += [record]
+            else:
+                print("The format should be 'add name age score'")
         elif parse[0] == 'del':
             for p in scdb:
                 if p['Name'] == parse[1]:
-                    scdb.remove(p)    
+                    scdb.remove(p)
                     break
         elif parse[0] == 'show':
             sortKey ='Name' if len(parse) == 1 else parse[1]
