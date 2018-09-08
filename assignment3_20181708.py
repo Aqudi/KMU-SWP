@@ -46,10 +46,17 @@ def doScoreDB(scdb):
             else:
                 print("The Command 'add' should be used in the format 'add name age score'")
         elif parse[0] == 'del':
+            count = 0
             for p in scdb:
                 if p['Name'] == parse[1]:
-                    scdb.remove(p)
-                    break
+                    count += 1
+            # 반복문을 돌고 리스트를 초기화 해야 동일한 항목이 여러개 있어도 깨끗하게 지워진다.
+            for i in range(count):
+                for p in scdb:
+                    if p['Name'] == parse[1]:
+                        scdb.remove(p)
+                        break
+
         elif parse[0] == 'show':
             sortKey ='Name' if len(parse) == 1 else parse[1]
             showScoreDB(scdb, sortKey)
