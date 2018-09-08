@@ -76,16 +76,21 @@ def doScoreDB(scdb):
             print("'{}'님의 정보({}건):".format(parse[1], len(temp)))
             showScoreDB(temp, 'Name')
         elif parse[0] == 'inc':
-            temp = []
-            try:
+            if len(parse) == 3:
+                temp = []
+                try:
+                    parse[2] = int(parse[2])
+                except:
+                    print("amound should be integer")
+                    continue
                 for p in scdb:
                     if p['Name'] == parse[1]:
                         temp += [p]
                 print("'{}'님의 정보({}건):".format(parse[1], len(temp)))
                 showScoreDB(temp, 'Name')
                 number = int(input("점수를 더하고 싶은 사람의 번호를 입력해 주세요: "))
-                temp[number-1]['Score'] += int(parse[2])
-            except:
+                temp[number - 1]['Score'] += parse[2]
+            else:
                 print("The Command 'inc' should be used in the format 'inc name amount'")
                 continue
         elif parse[0] == 'quit':
