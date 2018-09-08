@@ -44,7 +44,7 @@ def doScoreDB(scdb):
                 record = {'Name':parse[1], 'Age':parse[2], 'Score':parse[3]}
                 scdb += [record]
             else:
-                print("The format should be 'add name age score'")
+                print("The Command 'add' should be used in the format 'add name age score'")
         elif parse[0] == 'del':
             for p in scdb:
                 if p['Name'] == parse[1]:
@@ -54,11 +54,16 @@ def doScoreDB(scdb):
             sortKey ='Name' if len(parse) == 1 else parse[1]
             showScoreDB(scdb, sortKey)
         elif parse[0] == 'find':
-            for p in scdb:
-                temp = []
-                if p['Name'] == parse[1]:
-                    temp += [p]
-                    showScoreDB(temp, 'Name')
+            temp = []
+            try:
+                for p in scdb:
+                    if p['Name'] == parse[1]:
+                        temp += [p]
+            except:
+                print("The Command 'find' should be used in the format 'find name'")
+                continue
+            print("'{}'님의 정보({}건):".format(parse[1], len(temp)))
+            showScoreDB(temp, 'Name')
         elif parse[0] == 'quit':
             break
         else:
@@ -66,10 +71,15 @@ def doScoreDB(scdb):
 
 
 def showScoreDB(scdb, keyname):
-    for p in sorted(scdb, key=lambda person: person[keyname]):
-        for attr in sorted(p):
-            print(attr + "=" + str(p[attr]), end=' ')
-        print()
+    if scdb:
+        for p in sorted(scdb, key=lambda person: person[keyname]):
+
+            for attr in sorted(p):
+                print(attr + "=" + str(p[attr]), end=' ')
+
+            print()
+    else:
+         print("정보가 없습니다.")
 
 
 scoredb = readScoreDB()
