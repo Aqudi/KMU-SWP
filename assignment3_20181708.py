@@ -53,6 +53,12 @@ def doScoreDB(scdb):
         elif parse[0] == 'show':
             sortKey ='Name' if len(parse) == 1 else parse[1]
             showScoreDB(scdb, sortKey)
+        elif parse[0] == 'find':
+            for p in scdb:
+                temp = []
+                if p['Name'] == parse[1]:
+                    temp += [p]
+                    showScoreDB(temp, 'Name')
         elif parse[0] == 'quit':
             break
         else:
