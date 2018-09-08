@@ -61,8 +61,6 @@ def doScoreDB(scdb):
                     if p['Name'] == parse[1]:
                         scdb.remove(p)
                         break
-
-
         elif parse[0] == 'show':
             sortKey ='Name' if len(parse) == 1 else parse[1]
             showScoreDB(scdb, sortKey)
@@ -77,6 +75,19 @@ def doScoreDB(scdb):
                 continue
             print("'{}'님의 정보({}건):".format(parse[1], len(temp)))
             showScoreDB(temp, 'Name')
+        elif parse[0] == 'inc':
+            temp = []
+            try:
+                for p in scdb:
+                    if p['Name'] == parse[1]:
+                        temp += [p]
+                print("'{}'님의 정보({}건):".format(parse[1], len(temp)))
+                showScoreDB(temp, 'Name')
+                number = int(input("점수를 더하고 싶은 사람의 번호를 입력해 주세요: "))
+                temp[number-1]['Score'] += int(parse[2])
+            except:
+                print("The Command 'inc' should be used in the format 'inc name amount'")
+                continue
         elif parse[0] == 'quit':
             break
         else:
