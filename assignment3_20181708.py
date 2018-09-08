@@ -72,8 +72,8 @@ def doScoreDB(scdb):
 
 def showScoreDB(scdb, keyname):
     if scdb:
-        for p in sorted(scdb, key=lambda person: person[keyname]):
-
+        for number, p in enumerate(sorted(scdb, key=lambda person: person[keyname])):
+            print("{}.".format(number+1), end=' ')
             for attr in sorted(p):
                 print(attr + "=" + str(p[attr]), end=' ')
 
