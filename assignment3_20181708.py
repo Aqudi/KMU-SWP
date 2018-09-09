@@ -8,7 +8,6 @@ def readScoreDB():
     except FileNotFoundError as e:
         print("New DB: ", dbfilename)
         return []
-
     scdb = []
     try:
         scdb = pickle.load(fH)
@@ -81,7 +80,7 @@ def doScoreDB(scdb):
                 try:
                     parse[2] = int(parse[2])
                 except:
-                    print("amound should be integer")
+                    print("amount should be integer")
                     continue
                 for p in scdb:
                     if p['Name'] == parse[1]:
