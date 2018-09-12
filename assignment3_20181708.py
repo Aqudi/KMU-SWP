@@ -33,35 +33,24 @@ def doScoreDB(scdb):
         parse = inputstr.split(" ")
         if parse[0] == 'add':
             # check if input satisfied format and type of value
-            if len(parse) == 4:
-                try:
-                    parse[2] = int(parse[2])
-                    parse[3] = int(parse[3])
-                except:
-                    print("Age and Score should be integer")
-                    continue
-                record = {'Name':parse[1], 'Age':parse[2], 'Score':parse[3]}
+            try:
+                parse[2] = int(parse[2])
+                parse[3] = int(parse[3])
+                record = {'Name': parse[1], 'Age': parse[2], 'Score': parse[3]}
                 scdb += [record]
-            else:
+            except ValueError:
+                print("Age and Score should be integer")
+            except IndexError:
                 print("The Command 'add' should be used in the format 'add name age score'")
-                continue
         elif parse[0] == 'del':
             try:
-                count = 0
-                for p in scdb:
-                    if p['Name'] == parse[1]:
-                        count += 1
-            except:
-                print("The Command 'del' should be used in the format 'del name'")
-                continue
-                # 반복문을 돌고 리스트를 초기화 해야 동일한 항목이 여러개 있어도 깨끗하게 지워진다.
-            for i in range(count):
-                for p in scdb:
+                for p in scdb[:]:
                     if p['Name'] == parse[1]:
                         scdb.remove(p)
-                        break
+            except IndexError:
+                print("The Command 'del' should be used in the format 'del name'")
         elif parse[0] == 'show':
-            sortKey ='Name' if len(parse) == 1 else parse[1]
+            sortKey = 'Name' if len(parse) == 1 else parse[1]
             showScoreDB(scdb, sortKey)
         elif parse[0] == 'find':
             temp = []
@@ -69,7 +58,7 @@ def doScoreDB(scdb):
                 for p in scdb:
                     if p['Name'] == parse[1]:
                         temp += [p]
-            except:
+            except IndexError:
                 print("The Command 'find' should be used in the format 'find name'")
                 continue
             print("'{}'님의 정보({}건):".format(parse[1], len(temp)))
@@ -79,7 +68,7 @@ def doScoreDB(scdb):
                 temp = []
                 try:
                     parse[2] = int(parse[2])
-                except:
+                except ValueError:
                     print("amount should be integer")
                     continue
                 for p in scdb:
@@ -107,7 +96,7 @@ def showScoreDB(scdb, keyname):
 
             print()
     else:
-         print("정보가 없습니다.")
+        print("정보가 없습니다.")
 
 
 scoredb = readScoreDB()
