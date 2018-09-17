@@ -9,15 +9,15 @@ def seqsearch(nbrs, target):
     return -1
 
 
-def recbinsearch(L, l, u, target):
-    m = u+l//2
-    print(m, l ,u)
-    if target == m:
+def recbinsearch(list, low, upper, target):
+    middle = upper+low//2
+    print(middle, low, upper)
+    if target == middle:
         return -1
-    elif target > m:
-        recbinsearch(L, m, u, target)
-    elif target < m:
-        recbinsearch(L, l, m, target)
+    elif target > middle:
+        recbinsearch(list, middle, upper, target)
+    elif target < middle:
+        recbinsearch(list, low, middle, target)
     return -1
 
 
