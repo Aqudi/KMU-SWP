@@ -10,6 +10,14 @@ def seqsearch(nbrs, target):
 
 
 def recbinsearch(L, l, u, target):
+    m = u+l//2
+    print(m, l ,u)
+    if target == m:
+        return -1
+    elif target > m:
+        recbinsearch(L, m, u, target)
+    elif target < m:
+        recbinsearch(L, l, m, target)
     return -1
 
 
