@@ -17,9 +17,9 @@ def recbinsearch(list, lower, upper, target):
         return middleNum
     if upper <= lower:
         return -1
-    elif target > middleNum:
+    if target > middleNum:
         return recbinsearch(list, middle+1, upper, target)
-    elif target < middleNum:
+    if target < middleNum:
         return recbinsearch(list, lower, middle-1, target)
 
 
