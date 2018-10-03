@@ -13,10 +13,10 @@ def iterfibo(n):
     if n <= 1:
         number_list.append(n)
     else:
-        number_list = [1, 1]
+        number_list = [0, 1]
         for i in range(n):
                 number_list.append(number_list[i] + number_list[i + 1])
-    result = number_list[n-1]
+    result = number_list[n]
     return result
 
 
