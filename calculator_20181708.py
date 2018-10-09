@@ -32,18 +32,8 @@ class Calculator(QWidget):
 
         # Digit Buttons
         self.digitButton = [x for x in range(0, 10)]
-
-        self.digitButton[0] = Button('0')
-        self.digitButton[1] = Button('1')
-        self.digitButton[2] = Button('2')
-        self.digitButton[3] = Button('3')
-        self.digitButton[4] = Button('4')
-        self.digitButton[5] = Button('5')
-        self.digitButton[6] = Button('6')
-        self.digitButton[7] = Button('7')
-        self.digitButton[8] = Button('8')
-        self.digitButton[9] = Button('9')
-
+        for i in range(0,10):
+            self.digitButton[i] = Button(str(i))
         # . and = Buttons
         self.decButton = Button('.')
         self.eqButton = Button('=')
