@@ -34,6 +34,7 @@ class Calculator(QWidget):
         self.digitButton = [x for x in range(0, 10)]
         for i in range(0,10):
             self.digitButton[i] = Button(str(i))
+
         # . and = Buttons
         self.decButton = Button('.')
         self.eqButton = Button('=')
@@ -59,16 +60,11 @@ class Calculator(QWidget):
 
         numLayout = QGridLayout()
 
+        for i in range(1,10):
+            numLayout.addWidget(self.digitButton[i], (10-i-1)//3, (i-1)%3)
         numLayout.addWidget(self.digitButton[0], 3, 0)
-        numLayout.addWidget(self.digitButton[1], 2, 0)
-        numLayout.addWidget(self.digitButton[2], 2, 1)
-        numLayout.addWidget(self.digitButton[3], 2, 2)
-        numLayout.addWidget(self.digitButton[4], 1, 0)
-        numLayout.addWidget(self.digitButton[5], 1, 1)
-        numLayout.addWidget(self.digitButton[6], 1, 2)
-        numLayout.addWidget(self.digitButton[7], 0, 0)
-        numLayout.addWidget(self.digitButton[8], 0, 1)
-        numLayout.addWidget(self.digitButton[9], 0, 2)
+
+
 
         numLayout.addWidget(self.decButton, 3, 1)
         numLayout.addWidget(self.eqButton, 3, 2)
