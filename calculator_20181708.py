@@ -89,6 +89,17 @@ class Calculator(QWidget):
 
         self.setWindowTitle("My Calculator")
 
+    def buttonClicked(self):
+        button = self.sender()
+        key = button.text()
+        if key == '=':
+            result = str(eval(self.display.text()))
+            self.display.setText(result)
+        elif key == 'C':
+            self.display.setText("")
+        else:
+            self.display.setText(self.display.text() + key)
+
 
 if __name__ == '__main__':
 
