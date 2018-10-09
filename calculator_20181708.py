@@ -26,7 +26,7 @@ class Calculator(QWidget):
         super().__init__(parent)
 
         # Display Window
-        self.display = QLineEdit('0')
+        self.display = QLineEdit()
         self.display.setReadOnly(True)
         self.display.setAlignment(Qt.AlignRight)
         self.display.setMaxLength(15)
@@ -94,8 +94,11 @@ class Calculator(QWidget):
         button = self.sender()
         key = button.text()
         if key == '=':
-            result = str(eval(self.display.text()))
-            self.display.setText(result)
+            try:
+                result = str(eval(self.display.text()))
+                self.display.setText(result)
+            except SyntaxError:
+                pass
         elif key == 'C':
             self.display.setText("")
         else:
