@@ -7,10 +7,11 @@ from PyQt5.QtWidgets import QLayout, QGridLayout
 
 class Button(QToolButton):
 
-    def __init__(self, text):
+    def __init__(self, text, callback):
         super().__init__()
         self.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Preferred)
         self.setText(text)
+        self.clicked.connect(callback)
 
     def sizeHint(self):
         size = super(Button, self).sizeHint()
@@ -33,24 +34,24 @@ class Calculator(QWidget):
         # Digit Buttons
         self.digitButton = [x for x in range(0, 10)]
         for i in range(0,10):
-            self.digitButton[i] = Button(str(i))
+            self.digitButton[i] = Button(str(i), self.buttonClicked)
 
         # . and = Buttons
-        self.decButton = Button('.')
-        self.eqButton = Button('=')
+        self.decButton = Button('.', self.buttonClicked)
+        self.eqButton = Button('=', self.buttonClicked)
 
         # Operator Buttons
-        self.mulButton = Button('*')
-        self.divButton = Button('/')
-        self.addButton = Button('+')
-        self.subButton = Button('-')
+        self.mulButton = Button('*', self.buttonClicked)
+        self.divButton = Button('/', self.buttonClicked)
+        self.addButton = Button('+', self.buttonClicked)
+        self.subButton = Button('-', self.buttonClicked)
 
         # Parentheses Buttons
-        self.lparButton = Button('(')
-        self.rparButton = Button(')')
+        self.lparButton = Button('(', self.buttonClicked)
+        self.rparButton = Button(')', self.buttonClicked)
 
         # Clear Button
-        self.clearButton = Button('C')
+        self.clearButton = Button('C', self.buttonClicked)
 
         # Layout
         mainLayout = QGridLayout()
