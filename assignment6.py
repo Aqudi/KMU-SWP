@@ -54,6 +54,32 @@ class ScoreDB(QWidget):
         hbox2.addWidget(lb_key)
         hbox2.addWidget(combo)
 
+        #세번쨰라인
+        btn_add = QPushButton("Add")
+        btn_del = QPushButton("Del")
+        btn_find = QPushButton("Find")
+        btn_inc = QPushButton("Inc")
+        btn_show = QPushButton("Show")
+
+        hbox3 = QHBoxLayout()
+        baseLayout.addLayout(hbox3)
+        hbox3.addStretch(1)
+        hbox3.addWidget(btn_add)
+        hbox3.addWidget(btn_del)
+        hbox3.addWidget(btn_find)
+        hbox3.addWidget(btn_inc)
+        hbox3.addWidget(btn_show)
+
+        #네 다섯번쨰라인
+        lb_result = QLabel("Result")
+        te_result = QTextEdit()
+
+        vbox = QVBoxLayout()
+        baseLayout.addLayout(vbox)
+        vbox.addStretch(1)
+        vbox.addWidget(lb_result)
+        vbox.addWidget(te_result)
+
         self.setLayout(baseLayout)
         self.setGeometry(300, 300, 500, 250)
         self.setWindowTitle('Assignment6')
@@ -70,7 +96,7 @@ class ScoreDB(QWidget):
             return
 
         try:
-            self.scoredb =  pickle.load(fH)
+            self.scoredb = pickle.load(fH)
         except:
             pass
         else:
