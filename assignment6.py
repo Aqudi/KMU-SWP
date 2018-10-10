@@ -17,6 +17,28 @@ class ScoreDB(QWidget):
         self.showScoreDB()
 
     def initUI(self):
+        #베이스 레이아웃
+        baseLayout = QVBoxLayout()
+
+        # 첫번째라인
+        lb_name = QLabel("Name", self)
+        le_name = QLineEdit()
+        lb_age = QLabel("Age", self)
+        le_age = QLineEdit()
+        lb_score = QLabel("Score", self)
+        le_score = QLineEdit()
+
+        hbox = QHBoxLayout()
+        baseLayout.addLayout(hbox)
+        hbox.addWidget(lb_name)
+        hbox.addWidget(le_name)
+        hbox.addWidget(lb_age)
+        hbox.addWidget(le_age)
+        hbox.addWidget(lb_score)
+        hbox.addWidget(le_score)
+
+
+        self.setLayout(baseLayout)
         self.setGeometry(300, 300, 500, 250)
         self.setWindowTitle('Assignment6')
         self.show()
