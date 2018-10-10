@@ -37,6 +37,22 @@ class ScoreDB(QWidget):
         hbox.addWidget(lb_score)
         hbox.addWidget(le_score)
 
+        #두번쨰라인
+        lb_amount = QLabel("Amount", self)
+        le_amount = QLineEdit()
+        lb_key = QLabel("Key", self)
+        combo = QComboBox()
+        combo.addItem("Name")
+        combo.addItem("Age")
+        combo.addItem("Score")
+
+        hbox2 = QHBoxLayout()
+        baseLayout.addLayout(hbox2)
+        hbox2.addStretch(1)
+        hbox2.addWidget(lb_amount)
+        hbox2.addWidget(le_amount)
+        hbox2.addWidget(lb_key)
+        hbox2.addWidget(combo)
 
         self.setLayout(baseLayout)
         self.setGeometry(300, 300, 500, 250)
