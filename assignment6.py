@@ -5,7 +5,6 @@ from PyQt5.QtWidgets import (QWidget, QPushButton,
     QComboBox, QTextEdit, QLineEdit)
 from PyQt5.QtCore import Qt
 
-
 class ScoreDB(QWidget):
 
     def __init__(self):
@@ -14,7 +13,7 @@ class ScoreDB(QWidget):
         self.dbfilename = 'assignment6.dat'
         self.scoredb = []
         self.readScoreDB()
-        self.showScoreDB()
+        self.showScoreDB(self.scoredb)
 
     def initUI(self):
         #베이스 레이아웃
@@ -55,11 +54,11 @@ class ScoreDB(QWidget):
         hbox2.addWidget(self.combo)
 
         #세번쨰라인
-        btn_add = QPushButton("Add")
-        btn_del = QPushButton("Del")
-        btn_find = QPushButton("Find")
-        btn_inc = QPushButton("Inc")
-        btn_show = QPushButton("Show")
+        btn_add = Button("Add", self.buttonClicked)
+        btn_del = Button("Del", self.buttonClicked)
+        btn_find = Button("Find", self.buttonClicked)
+        btn_inc = Button("Inc", self.buttonClicked)
+        btn_show = Button("Show", self.buttonClicked)
 
         hbox3 = QHBoxLayout()
         baseLayout.addLayout(hbox3)
@@ -111,10 +110,10 @@ class ScoreDB(QWidget):
         pickle.dump(self.scoredb, fH)
         fH.close()
 
-    def showScoreDB(self):
-        if self.scoredb:
+    def showScoreDB(self, DB):
+        if DB:
             text = ""
-            for index, p in enumerate(sorted(self.scoredb, key=lambda person: person[self.combo.currentText()])):
+            for index, p in enumerate(sorted(DB, key=lambda person: person[self.combo.currentText()])):
                 print("{}.".format(index + 1), end=' ')
                 text += (str(index+1)+". ")
                 for attr in sorted(p):
@@ -124,6 +123,18 @@ class ScoreDB(QWidget):
             self.te_result.setText(text)
         else:
             print("정보가 없습니다.")
+
+    class Button(QPushButton):
+
+        def __init__(self, text, callback):
+            super().__init__()
+            self.setText(text)
+            self.clicked.connect(callback)
+
+    def buttonClicked(self):
+        button = self.sender()
+        key = button.text()
+
 
 if __name__ == '__main__':
     app = QApplication(sys.argv)
