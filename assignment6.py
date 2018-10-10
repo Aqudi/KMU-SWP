@@ -122,6 +122,7 @@ class ScoreDB(QWidget):
     def showScoreDB(self, DB):
         if DB:
             text = ""
+            print("DB=================================================")
             for index, p in enumerate(sorted(DB, key=lambda person: person[self.combo.currentText()])):
                 print("{}.".format(index + 1), end=' ')
                 text += (str(index+1)+". ")
@@ -129,10 +130,11 @@ class ScoreDB(QWidget):
                     print(attr + "=" + str(p[attr]), end=' ')
                     text += (attr + "=" + str(p[attr]) + " ")
                 text +="\n"
+                print()
             self.te_result.setText(text)
+            print("===================================================")
         else:
             print("정보가 없습니다.")
-
 
 
     def buttonClicked(self):
@@ -149,32 +151,46 @@ class ScoreDB(QWidget):
                 age = int(age)
                 score = int(score)
                 record = {'Name': name, 'Age': age, 'Score': score}
-                self.scoredb += [record]
+                scoredb += [record]
+                self.showScoreDB(scoredb)
             except ValueError:
                 print("pass")
                 pass
-            self.showScoreDB(scoredb)
 
         elif key == 'Del':
+            print("Del")
             for p in scoredb[:]:
                 if p['Name'] == name:
-                    self.scoredb.remove(p)
+                    scoredb.remove(p)
             self.showScoreDB(scoredb)
 
         elif key == 'Show':
+            print("Del")
             self.showScoreDB(scoredb)
 
         elif key == 'Find':
+            print("Find")
             temp = []
             for p in scoredb:
                 if p['Name'] == name:
                     temp += [p]
             self.showScoreDB(temp)
         elif key == 'Inc':
-            for p in scoredb:
-                if p['Name'] == name:
-                    p['Score'] += amount
+            try:
+                amount = int(amount)
+                print("Inc")
+                for p in scoredb:
+                    if p['Name'] == name:
+                        p['Score'] += amount
+            except ValueError:
+                print("pass")
+                pass
             self.showScoreDB(scoredb)
+
+        self.le_name.setText("")
+        self.le_age.setText("")
+        self.le_score.setText("")
+        self.le_amount.setText("")
 
 
 if __name__ == '__main__':
