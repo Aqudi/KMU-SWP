@@ -1,3 +1,5 @@
+# 20181708 국민대학교 소프트웨어학과 허태정
+
 import pickle
 import sys
 from PyQt5.QtWidgets import (QWidget, QPushButton,
@@ -29,12 +31,12 @@ class ScoreDB(QWidget):
         baseLayout = QVBoxLayout()
 
         # 첫번째라인
-        lb_name = QLabel("Name", self)
         self.le_name = QLineEdit()
-        lb_age = QLabel("Age", self)
         self.le_age = QLineEdit()
-        lb_score = QLabel("Score", self)
         self.le_score = QLineEdit()
+        lb_name = QLabel("Name", self)
+        lb_score = QLabel("Score", self)
+        lb_age = QLabel("Age", self)
 
         hbox = QHBoxLayout()
         baseLayout.addLayout(hbox)
@@ -46,13 +48,13 @@ class ScoreDB(QWidget):
         hbox.addWidget(self.le_score)
 
         #두번쨰라인
-        lb_amount = QLabel("Amount", self)
         self.le_amount = QLineEdit()
-        lb_key = QLabel("Key", self)
         self.combo = QComboBox()
         self.combo.addItem("Name")
         self.combo.addItem("Age")
         self.combo.addItem("Score")
+        lb_key = QLabel("Key", self)
+        lb_amount = QLabel("Amount", self)
 
         hbox2 = QHBoxLayout()
         baseLayout.addLayout(hbox2)
@@ -119,6 +121,7 @@ class ScoreDB(QWidget):
         pickle.dump(self.scoredb, fH)
         fH.close()
 
+
     def showScoreDB(self, DB):
         if DB:
             text = ""
@@ -132,9 +135,9 @@ class ScoreDB(QWidget):
                 text +="\n"
                 print()
             self.te_result.setText(text)
-            print("===================================================")
+            print("===================================================\n")
         else:
-            print("정보가 없습니다.")
+            print("정보가 없습니다.\n")
 
 
     def buttonClicked(self):
@@ -154,7 +157,7 @@ class ScoreDB(QWidget):
                 scoredb += [record]
                 self.showScoreDB(scoredb)
             except ValueError:
-                print("pass")
+                print("pass\n")
                 pass
 
         elif key == 'Del':
@@ -165,7 +168,7 @@ class ScoreDB(QWidget):
             self.showScoreDB(scoredb)
 
         elif key == 'Show':
-            print("Del")
+            print("Show")
             self.showScoreDB(scoredb)
 
         elif key == 'Find':
@@ -176,14 +179,14 @@ class ScoreDB(QWidget):
                     temp += [p]
             self.showScoreDB(temp)
         elif key == 'Inc':
+            print("Inc")
             try:
                 amount = int(amount)
-                print("Inc")
                 for p in scoredb:
                     if p['Name'] == name:
                         p['Score'] += amount
             except ValueError:
-                print("pass")
+                print("pass\n")
                 pass
             self.showScoreDB(scoredb)
 
