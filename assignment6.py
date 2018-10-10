@@ -41,10 +41,10 @@ class ScoreDB(QWidget):
         lb_amount = QLabel("Amount", self)
         le_amount = QLineEdit()
         lb_key = QLabel("Key", self)
-        combo = QComboBox()
-        combo.addItem("Name")
-        combo.addItem("Age")
-        combo.addItem("Score")
+        self.combo = QComboBox()
+        self.combo.addItem("Name")
+        self.combo.addItem("Age")
+        self.combo.addItem("Score")
 
         hbox2 = QHBoxLayout()
         baseLayout.addLayout(hbox2)
@@ -52,7 +52,7 @@ class ScoreDB(QWidget):
         hbox2.addWidget(lb_amount)
         hbox2.addWidget(le_amount)
         hbox2.addWidget(lb_key)
-        hbox2.addWidget(combo)
+        hbox2.addWidget(self.combo)
 
         #세번쨰라인
         btn_add = QPushButton("Add")
@@ -72,13 +72,14 @@ class ScoreDB(QWidget):
 
         #네 다섯번쨰라인
         lb_result = QLabel("Result")
-        te_result = QTextEdit()
+        self.te_result = QTextEdit()
+        self.te_result.setReadOnly(True)
 
         vbox = QVBoxLayout()
         baseLayout.addLayout(vbox)
         vbox.addStretch(1)
         vbox.addWidget(lb_result)
-        vbox.addWidget(te_result)
+        vbox.addWidget(self.te_result)
 
         self.setLayout(baseLayout)
         self.setGeometry(300, 300, 500, 250)
@@ -111,8 +112,18 @@ class ScoreDB(QWidget):
         fH.close()
 
     def showScoreDB(self):
-        pass
-
+        if self.scoredb:
+            text = ""
+            for index, p in enumerate(sorted(self.scoredb, key=lambda person: person[self.combo.currentText()])):
+                print("{}.".format(index + 1), end=' ')
+                text += (str(index+1)+". ")
+                for attr in sorted(p):
+                    print(attr + "=" + str(p[attr]), end=' ')
+                    text += (attr + "=" + str(p[attr]) + " ")
+                text +="\n"
+            self.te_result.setText(text)
+        else:
+            print("정보가 없습니다.")
 
 if __name__ == '__main__':
     app = QApplication(sys.argv)
