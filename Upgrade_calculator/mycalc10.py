@@ -93,11 +93,24 @@ class Calculator(QWidget):
             self.display.setText(self.display.text() + connectionWithConstants[key])
 
         elif key in functionList:
-            n = self.display.text()
-            self.display.setText(connectionWithFunctions(n)[key])
+            for i in range(len(self.display.text())-1, -1, -1):
+                if self.display.text()[i] not in numPadList:
+                    n = self.display.text()[i:]
+                    self.display.setText(self.display.text()[:i+1])
+                    break
+            self.display.setText(self.display.text() + connectionWithFunctions(n)[key])
 
         else:
             self.display.setText(self.display.text() + key)
+
+    def parsing(self):
+        display = self.display.text()
+        for i in range(len(display)):
+            if display[i] in numPadList:
+                pass
+            else:
+                display[i] = " "
+
 
 
 if __name__ == '__main__':
