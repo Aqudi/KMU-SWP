@@ -93,7 +93,8 @@ class Calculator(QWidget):
         if "Error" in status.text():
             self.clearDisplays()
         elif display.text() and key in operatorList[:4]:
-            pass
+            if status.text() == key and currentInput.text():
+                key = "="
         elif display.text() and status.text() is "":
             self.clearDisplays()
 
@@ -101,15 +102,11 @@ class Calculator(QWidget):
             try:
                 result = eval(str(display.text()) + str(status.text()) + str(currentInput.text()))
                 display.setText(str(result))
-                status.clear()
                 currentInput.clear()
             except:
                 status.setText('Error : 잘못된 수식입니다!')
-
         elif key == 'C':
-            display.clear()
-            status.clear()
-            currentInput.clear()
+            self.clearDisplays()
 
         elif key in constantList:
             self.display.setText(self.display.text() + connectionWithConstants[key])
