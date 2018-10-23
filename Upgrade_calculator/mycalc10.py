@@ -122,9 +122,12 @@ class Calculator(QWidget):
                     break
             self.display.setText(self.display.text() + connectionWithFunctions(n)[key])
         elif key in operatorList[:4]:
-            display.setText(currentInput.text())
-            status.setText(key)
-            currentInput.clear()
+            if display.text() and currentInput.text() is "":
+                status.setText(key)
+            else:
+                display.setText(currentInput.text())
+                status.setText(key)
+                currentInput.clear()
 
         else:
             currentInput.setText(currentInput.text() + key)
