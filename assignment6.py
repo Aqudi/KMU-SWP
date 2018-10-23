@@ -1,5 +1,5 @@
 # 20181708 국민대학교 소프트웨어학과 허태정
-
+# vbox랑 hbox쓰지 말기,
 import pickle
 import sys
 from PyQt5.QtWidgets import (QWidget, QPushButton,
@@ -86,10 +86,11 @@ class ScoreDB(QWidget):
         self.te_result.setReadOnly(True)
 
         vbox = QVBoxLayout()
+        #vbox.addStretch(1)
         baseLayout.addLayout(vbox)
-        vbox.addStretch(1)
         vbox.addWidget(lb_result)
         vbox.addWidget(self.te_result)
+        #vbox.addStretch(1)
 
         self.setLayout(baseLayout)
         self.setGeometry(300, 300, 500, 250)
