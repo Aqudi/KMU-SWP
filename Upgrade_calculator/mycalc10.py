@@ -3,6 +3,7 @@ from PyQt5.QtWidgets import QApplication, QWidget
 from PyQt5.QtWidgets import QLineEdit, QToolButton
 from PyQt5.QtWidgets import QSizePolicy
 from PyQt5.QtWidgets import QLayout, QGridLayout
+from PyQt5.QtWidgets import QLabel
 
 from keypad import numPadList, operatorList, constantList, functionList
 from connection import connectionWithConstants, connectionWithFunctions
@@ -21,6 +22,13 @@ class Button(QToolButton):
         size.setWidth(max(size.width(), size.height()))
         return size
 
+class LineEdit(QLineEdit):
+    def __init__(self):
+        super().__init__()
+        self.setReadOnly(True)
+        self.setAlignment(Qt.AlignRight)
+        self.setMaxLength(15)
+
 
 class Calculator(QWidget):
 
@@ -28,10 +36,13 @@ class Calculator(QWidget):
         super().__init__(parent)
 
         # Display Window
-        self.display = QLineEdit()
-        self.display.setReadOnly(True)
-        self.display.setAlignment(Qt.AlignRight)
-        self.display.setMaxLength(15)
+        displayLayout = QGridLayout()
+        self.displayResult = QLineEdit()
+        self.displayStatus = QLabel("")
+        self.displayCurrentInput = QLineEdit()
+        displayLayout.addWidget(self.displayResult, 0, 0, 1, 0)
+        displayLayout.addWidget(self.displayStatus, 2, 0, 2, 1)
+        displayLayout.addWidget(self.displayCurrentInput, 2, 1, 2, 2)
 
         # Button Creation and Placement
         numLayout = QGridLayout()
@@ -60,7 +71,7 @@ class Calculator(QWidget):
         mainLayout = QGridLayout()
         mainLayout.setSizeConstraint(QLayout.SetFixedSize)
 
-        mainLayout.addWidget(self.display, 0, 0, 1, 2)
+        mainLayout.addLayout(displayLayout, 0, 0, 1, 0)
         mainLayout.addLayout(numLayout, 1, 0)
         mainLayout.addLayout(opLayout, 1, 1)
         mainLayout.addLayout(constLayout, 2, 0)
@@ -73,8 +84,8 @@ class Calculator(QWidget):
 
     def buttonClicked(self):
 
-        if "Error!" in self.display.text():
-            self.display.setText('')
+        if "Error" in self.display.text():
+            self.displayResult.setText('')
 
         button = self.sender()
         key = button.text()
@@ -83,7 +94,7 @@ class Calculator(QWidget):
             try:
                 result = str(eval(self.display.text()))
             except:
-                result = 'Error!'
+                result = 'Error : 잘못된 수식입니다!'
             self.display.setText(result)
 
         elif key == 'C':
