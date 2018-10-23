@@ -37,9 +37,10 @@ class Calculator(QWidget):
 
         # Display Window
         displayLayout = QGridLayout()
-        self.displayResult = QLineEdit()
+        self.displayResult = LineEdit()
         self.displayStatus = QLabel("")
-        self.displayCurrentInput = QLineEdit()
+        self.displayCurrentInput = LineEdit()
+        self.displayStatus.setAlignment(Qt.AlignCenter)
         displayLayout.addWidget(self.displayResult, 0, 0, 1, 0)
         displayLayout.addWidget(self.displayStatus, 2, 0, 2, 1)
         displayLayout.addWidget(self.displayCurrentInput, 2, 1, 2, 2)
@@ -83,22 +84,32 @@ class Calculator(QWidget):
 
 
     def buttonClicked(self):
-
-        if "Error" in self.display.text():
-            self.displayResult.setText('')
-
+        display = self.displayResult
+        status = self.displayStatus
+        currentInput = self.displayCurrentInput
         button = self.sender()
         key = button.text()
 
+        if "Error" in status.text():
+            self.clearDisplays()
+        elif display.text() and key in operatorList[:4]:
+            pass
+        elif display.text() and status.text() is "":
+            self.clearDisplays()
+
         if key == '=':
             try:
-                result = str(eval(self.display.text()))
+                result = eval(str(display.text()) + str(status.text()) + str(currentInput.text()))
+                display.setText(str(result))
+                status.clear()
+                currentInput.clear()
             except:
-                result = 'Error : 잘못된 수식입니다!'
-            self.display.setText(result)
+                status.setText('Error : 잘못된 수식입니다!')
 
         elif key == 'C':
-            self.display.clear()
+            display.clear()
+            status.clear()
+            currentInput.clear()
 
         elif key in constantList:
             self.display.setText(self.display.text() + connectionWithConstants[key])
@@ -110,9 +121,18 @@ class Calculator(QWidget):
                     self.display.setText(self.display.text()[:i+1])
                     break
             self.display.setText(self.display.text() + connectionWithFunctions(n)[key])
+        elif key in operatorList[:4]:
+            display.setText(currentInput.text())
+            status.setText(key)
+            currentInput.clear()
 
         else:
-            self.display.setText(self.display.text() + key)
+            currentInput.setText(currentInput.text() + key)
+
+    def clearDisplays(self):
+        self.displayResult.clear()
+        self.displayStatus.clear()
+        self.displayCurrentInput.clear()
 
 
 
