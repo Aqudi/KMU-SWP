@@ -73,7 +73,7 @@ class Calculator(QWidget):
 
     def buttonClicked(self):
 
-        if self.display.text() == 'Error!':
+        if "Error!" in self.display.text():
             self.display.setText('')
 
         button = self.sender()
@@ -102,14 +102,6 @@ class Calculator(QWidget):
 
         else:
             self.display.setText(self.display.text() + key)
-
-    def parsing(self):
-        display = self.display.text()
-        for i in range(len(display)):
-            if display[i] in numPadList:
-                pass
-            else:
-                display[i] = " "
 
 
 
