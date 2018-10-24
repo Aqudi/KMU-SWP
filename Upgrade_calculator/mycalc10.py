@@ -3,7 +3,6 @@ from PyQt5.QtWidgets import QApplication, QWidget
 from PyQt5.QtWidgets import QLineEdit, QToolButton
 from PyQt5.QtWidgets import QSizePolicy
 from PyQt5.QtWidgets import QLayout, QGridLayout
-from PyQt5.QtWidgets import QLabel
 
 from keypad import numPadList, operatorList, constantList, functionList
 from connection import connectionWithConstants, connectionWithFunctions
@@ -27,7 +26,7 @@ class LineEdit(QLineEdit):
         super().__init__()
         self.setReadOnly(True)
         self.setAlignment(Qt.AlignRight)
-        self.setMaxLength(15)
+        self.setMaxLength(20)
 
 
 class Calculator(QWidget):
@@ -38,12 +37,10 @@ class Calculator(QWidget):
         # Display Window
         displayLayout = QGridLayout()
         self.displayResult = LineEdit()
-        self.displayStatus = QLabel("")
         self.displayCurrentInput = LineEdit()
-        self.displayStatus.setAlignment(Qt.AlignCenter)
-        displayLayout.addWidget(self.displayResult, 0, 0, 1, 0)
-        displayLayout.addWidget(self.displayStatus, 2, 0, 2, 1)
-        displayLayout.addWidget(self.displayCurrentInput, 2, 1, 2, 2)
+
+        displayLayout.addWidget(self.displayResult, 1, 0, 2, 0)
+        displayLayout.addWidget(self.displayCurrentInput, 0, 0, 1, 0)
 
         # Button Creation and Placement
         numLayout = QGridLayout()
@@ -85,53 +82,50 @@ class Calculator(QWidget):
 
     def buttonClicked(self):
         display = self.displayResult
-        status = self.displayStatus
         currentInput = self.displayCurrentInput
         button = self.sender()
         key = button.text()
 
-        if "Error" in status.text():
-            self.clearDisplays()
-        elif display.text() and key in operatorList[:4]:
-            if status.text() == key and currentInput.text():
-                key = "="
-        elif display.text() and status.text() is "":
-            self.clearDisplays()
 
         if key == '=':
             try:
-                result = eval(str(display.text()) + str(status.text()) + str(currentInput.text()))
-                display.setText(str(result))
-                currentInput.clear()
+                result = eval(str(currentInput.text()))
+                currentInput.setText(str(result))
+                display.clear()
             except:
-                status.setText('Error : 잘못된 수식입니다!')
+                display.setText('Error : 잘못된 수식입니다!')
+
         elif key == 'C':
             self.clearDisplays()
+
+        elif key == 'back':
+            currentInput.setText(currentInput.text()[:len(currentInput.text())-1])
 
         elif key in constantList:
             self.display.setText(self.display.text() + connectionWithConstants[key])
 
         elif key in functionList:
-            for i in range(len(self.display.text())-1, -1, -1):
-                if self.display.text()[i] not in numPadList:
-                    n = self.display.text()[i:]
-                    self.display.setText(self.display.text()[:i+1])
+            for i in range(len(currentInput.text())-1, -1, -1):
+                if currentInput.text()[i] not in numPadList:
+                    n = currentInput.text()[i+1:]
+                    currentInput.setText(currentInput.text()[:i+1] + connectionWithFunctions(n)[key])
                     break
-            self.display.setText(self.display.text() + connectionWithFunctions(n)[key])
-        elif key in operatorList[:4]:
-            if display.text() and currentInput.text() is "":
-                status.setText(key)
-            else:
-                display.setText(currentInput.text())
-                status.setText(key)
-                currentInput.clear()
-
         else:
             currentInput.setText(currentInput.text() + key)
 
+
+        if key not in operatorList or key == "back":
+            if currentInput.text():
+                try:
+                    result = eval(str(currentInput.text()))
+                    display.setText(str(result))
+                except:
+                    display.setText('Error : 잘못된 수식입니다!')
+            else:
+                display.setText("")
+
     def clearDisplays(self):
         self.displayResult.clear()
-        self.displayStatus.clear()
         self.displayCurrentInput.clear()
 
 
@@ -145,3 +139,22 @@ if __name__ == '__main__':
     calc.show()
     sys.exit(app.exec_())
 
+
+""" 
+        if "Error" in currentInput.text():
+             self.clearDisplays()
+        elif display.text() and key in operatorList[:4]:
+             if status.text() == key and currentInput.text():
+                 key = "="
+        elif display.text() and status.text() is "":
+             self.clearDisplays()
+             
+        elif key in operatorList[:4]:
+            if display.text() and currentInput.text() is "":
+                status.setText(key)
+        else:
+                display.setText(currentInput.text())
+                status.setText(key)
+                currentInput.clear()
+
+"""
