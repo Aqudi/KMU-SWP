@@ -26,7 +26,7 @@ class LineEdit(QLineEdit):
         super().__init__()
         self.setReadOnly(True)
         self.setAlignment(Qt.AlignRight)
-        self.setMaxLength(20)
+        self.setMaxLength(30)
 
 
 class Calculator(QWidget):
@@ -86,41 +86,62 @@ class Calculator(QWidget):
         button = self.sender()
         key = button.text()
 
+        if "Error!" in currentInput.text():
+            currentInput.setText(currentInput.text()[:len(currentInput.text())-len("Error!")])
 
         if key == '=':
             try:
                 result = eval(str(currentInput.text()))
                 currentInput.setText(str(result))
                 display.clear()
-            except:
-                display.setText('Error : 잘못된 수식입니다!')
-
+            except ZeroDivisionError:
+                display.setText('Error:0으로 나눌 수 없습니다.')
+            except SyntaxError:
+                display.setText('Error:잘못된 수식입니다.')
+        elif key == 'back':
+            currentInput.setText(currentInput.text()[:len(currentInput.text())-1])
         elif key == 'C':
             self.clearDisplays()
 
-        elif key == 'back':
-            currentInput.setText(currentInput.text()[:len(currentInput.text())-1])
+        elif key == '(':
+            idx = len(currentInput.text())-1
+            if currentInput.text()[idx].isdigit():
+                currentInput.setText(currentInput.text()+"*(")
+            else:
+                currentInput.setText(currentInput.text()+"(")
+
+
+
 
         elif key in constantList:
             self.display.setText(self.display.text() + connectionWithConstants[key])
 
         elif key in functionList:
             for i in range(len(currentInput.text())-1, -1, -1):
-                if currentInput.text()[i] not in numPadList:
+                if len(currentInput.text()) == 1:
+                    n = currentInput.text()[i]
+                    currentInput.setText(connectionWithFunctions(n)[key])
+                    break
+                elif currentInput.text().isdigit():
+                    n=currentInput.text()
+                    currentInput.setText(connectionWithFunctions(n)[key])
+                    break
+                elif currentInput.text()[i] not in numPadList:
                     n = currentInput.text()[i+1:]
                     currentInput.setText(currentInput.text()[:i+1] + connectionWithFunctions(n)[key])
                     break
         else:
             currentInput.setText(currentInput.text() + key)
 
-
-        if key not in operatorList or key == "back":
+        if key not in operatorList[:5]:
             if currentInput.text():
                 try:
                     result = eval(str(currentInput.text()))
                     display.setText(str(result))
-                except:
-                    display.setText('Error : 잘못된 수식입니다!')
+                except ZeroDivisionError:
+                    display.setText('Error:0으로 나눌 수 없습니다.')
+                except SyntaxError:
+                    display.setText('Error:잘못된 수식입니다!')
             else:
                 display.setText("")
 
