@@ -110,11 +110,8 @@ class Calculator(QWidget):
             else:
                 currentInput.setText(currentInput.text()+"(")
 
-
-
-
         elif key in constantList:
-            self.display.setText(self.display.text() + connectionWithConstants[key])
+            currentInput.setText(display.text() + connectionWithConstants[key])
 
         elif key in functionList:
             for i in range(len(currentInput.text())-1, -1, -1):
