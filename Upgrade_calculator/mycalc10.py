@@ -4,8 +4,9 @@ from PyQt5.QtWidgets import QLineEdit, QToolButton
 from PyQt5.QtWidgets import QSizePolicy
 from PyQt5.QtWidgets import QLayout, QGridLayout
 
-from keypad import numPadList, operatorList, constantList, functionList
-from connection import connectionWithConstants, connectionWithFunctions
+from keypad import numPadList, operatorList, constantList
+from constant import constantMap
+from functions import functionList, functionMap
 
 class Button(QToolButton):
 
@@ -111,26 +112,28 @@ class Calculator(QWidget):
                 currentInput.setText(currentInput.text()+"(")
 
         elif key in constantList:
-            currentInput.setText(display.text() + connectionWithConstants[key])
+            currentInput.setText(display.text() + constantMap[key])
 
         elif key in functionList:
+            complimentString = ""
+            n = -1
             for i in range(len(currentInput.text())-1, -1, -1):
                 if len(currentInput.text()) == 1:
                     n = currentInput.text()[i]
-                    currentInput.setText(connectionWithFunctions(n)[key])
                     break
                 elif currentInput.text().isdigit():
                     n=currentInput.text()
-                    currentInput.setText(connectionWithFunctions(n)[key])
                     break
                 elif currentInput.text()[i] not in numPadList:
                     n = currentInput.text()[i+1:]
-                    currentInput.setText(currentInput.text()[:i+1] + connectionWithFunctions(n)[key])
+                    complimentString = currentInput.text()[:i+1]
                     break
+            value = functionMap[functionList.index(key)][1](n)
+            currentInput.setText(complimentString + value)
         else:
             currentInput.setText(currentInput.text() + key)
 
-        if key not in operatorList[:5]:
+        if key not in operatorList[:5] and key not in functionList[3:]:
             if currentInput.text():
                 try:
                     result = eval(str(currentInput.text()))
@@ -141,7 +144,7 @@ class Calculator(QWidget):
                     display.setText('Error:잘못된 수식입니다!')
             else:
                 display.setText("")
-
+        
     def clearDisplays(self):
         self.displayResult.clear()
         self.displayCurrentInput.clear()
