@@ -19,10 +19,3 @@ constantList = [
     '태양과의 평균 거리 (km)',
 ]
 
-functionList = [
-    'factorial (!)',
-    '-> binary',
-    'binary -> dec',
-    '-> roman',
-]
-
