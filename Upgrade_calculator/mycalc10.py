@@ -40,8 +40,8 @@ class Calculator(QWidget):
         self.displayResult = LineEdit()
         self.displayCurrentInput = LineEdit()
 
-        displayLayout.addWidget(self.displayResult, 1, 0, 2, 0)
         displayLayout.addWidget(self.displayCurrentInput, 0, 0, 1, 0)
+        displayLayout.addWidget(self.displayResult, 1, 0, 2, 0)
 
         # Button Creation and Placement
         numLayout = QGridLayout()
@@ -91,14 +91,9 @@ class Calculator(QWidget):
             currentInput.setText(currentInput.text()[:len(currentInput.text())-len("Error!")])
 
         if key == '=':
-            try:
-                result = eval(str(currentInput.text()))
+            if display.text().find("Error") is -1:
+                result = self.evalWithExcept(currentInput.text())
                 currentInput.setText(str(result))
-                display.clear()
-            except ZeroDivisionError:
-                display.setText('Error:0으로 나눌 수 없습니다.')
-            except SyntaxError:
-                display.setText('Error:잘못된 수식입니다.')
         elif key == 'back':
             currentInput.setText(currentInput.text()[:len(currentInput.text())-1])
         elif key == 'C':
@@ -115,12 +110,11 @@ class Calculator(QWidget):
             except IndexError:
                 currentInput.setText(currentInput.text() + "(")
 
-
         elif key in constantList:
             currentInput.setText(display.text() + constantMap[key])
 
         elif key in functionList:
-            complimentString = ""
+            """complimentString = ""
             n = "default"
             for i in range(len(currentInput.text())-1, -1, -1):
                 if len(currentInput.text()) == 1:
@@ -136,21 +130,29 @@ class Calculator(QWidget):
             if n == "default":
                 n = currentInput.text()
             value = functionMap[functionList.index(key)][1](n)
-            currentInput.setText(complimentString + value)
+            currentInput.setText(complimentString + value)"""
+            result = self.evalWithExcept(currentInput.text())
+            currentInput.setText(functionMap[functionList.index(key)][1](result))
         else:
             currentInput.setText(currentInput.text() + key)
 
         if key not in operatorList[:5] and key not in functionList[3:]:
             if currentInput.text():
-                try:
-                    result = eval(str(currentInput.text()))
-                    display.setText(str(result))
-                except ZeroDivisionError:
-                    display.setText('Error:0으로 나눌 수 없습니다.')
-                except SyntaxError:
-                    display.setText('Error:잘못된 수식입니다!')
+                result = self.evalWithExcept(currentInput.text())
+                display.setText(result)
             else:
                 display.setText("")
+
+    def evalWithExcept(self, string):
+        try:
+            result = eval(str(string))
+            return str(result)
+        except ZeroDivisionError:
+            return 'Error:0으로 나눌 수 없습니다.'
+        except SyntaxError:
+            return 'Error:잘못된 수식입니다!'
+        except NameError:
+            return string
 
     def clearDisplays(self):
         self.displayResult.clear()
