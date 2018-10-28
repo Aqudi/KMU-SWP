@@ -5,7 +5,7 @@ from PyQt5.QtWidgets import QSizePolicy
 from PyQt5.QtWidgets import QLayout, QGridLayout
 
 from keypad import numPadList, operatorList, constantList
-from constant import constantMap
+from constant import constantMap, romanLetters
 from functions import functionList, functionMap
 
 class Button(QToolButton):
@@ -105,18 +105,23 @@ class Calculator(QWidget):
             self.clearDisplays()
 
         elif key == '(':
-            idx = len(currentInput.text())-1
-            if currentInput.text()[idx].isdigit():
-                currentInput.setText(currentInput.text()+"*(")
-            else:
-                currentInput.setText(currentInput.text()+"(")
+            try:
+                idx = len(currentInput.text())-1
+                chr = currentInput.text()[idx]
+                if chr.isdigit() or chr == ")":
+                    currentInput.setText(currentInput.text() + "*(")
+                else:
+                    currentInput.setText(currentInput.text() + "(")
+            except IndexError:
+                currentInput.setText(currentInput.text() + "(")
+
 
         elif key in constantList:
             currentInput.setText(display.text() + constantMap[key])
 
         elif key in functionList:
             complimentString = ""
-            n = -1
+            n = "default"
             for i in range(len(currentInput.text())-1, -1, -1):
                 if len(currentInput.text()) == 1:
                     n = currentInput.text()[i]
@@ -124,10 +129,12 @@ class Calculator(QWidget):
                 elif currentInput.text().isdigit():
                     n=currentInput.text()
                     break
-                elif currentInput.text()[i] not in numPadList:
+                elif currentInput.text()[i] not in numPadList and currentInput.text()[i] not in romanLetters:
                     n = currentInput.text()[i+1:]
                     complimentString = currentInput.text()[:i+1]
                     break
+            if n == "default":
+                n = currentInput.text()
             value = functionMap[functionList.index(key)][1](n)
             currentInput.setText(complimentString + value)
         else:
@@ -144,7 +151,7 @@ class Calculator(QWidget):
                     display.setText('Error:잘못된 수식입니다!')
             else:
                 display.setText("")
-        
+
     def clearDisplays(self):
         self.displayResult.clear()
         self.displayCurrentInput.clear()

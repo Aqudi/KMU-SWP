@@ -1,4 +1,5 @@
 from math import factorial as fact
+from constant import romans, romanLetters
 
 def factorial(numStr):
     try:
@@ -33,13 +34,6 @@ def decToRoman(numStr):
     if n >= 4000:
         return 'Error!'
 
-    romans = [
-        (1000, 'M'), (900, 'CM'), (500, 'D'), (400, 'CD'),
-        (100, 'C'), (90, 'XC'), (50, 'L'), (40, 'XL'),
-        (10, 'X'), (9, 'IX'), (5, 'V'), (4, 'IV'),
-        (1, 'I')
-    ]
-
     result = ''
     for value, letters in romans:
         while n >= value:
@@ -50,9 +44,26 @@ def decToRoman(numStr):
 
 def romanToDec(numStr):
     try:
-        n = int(numStr)
+        romanNum = str(numStr)
     except:
-        r = 'Error!'
+        return 'Error!'
+    # MMMCMXCIX = 3999
+    result = 0
+    for i in range(len(romanNum)):
+        n = 0
+        print(i)
+        if i+1 <= len(romanNum)-1:
+            if (romanNum[i] + romanNum[i+1]) in romanLetters:
+                index = romanLetters.index(romanNum[i])
+                n = romans[index][0] * (-1)
+            else:
+                index = romanLetters.index(romanNum[i])
+                n = romans[index][0]
+        else:
+            index = romanLetters.index(romanNum[i])
+            n = romans[index][0]
+
+        result += n
 
 
-    return 'Roman to Dec'
+    return str(result)
