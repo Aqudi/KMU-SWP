@@ -89,7 +89,8 @@ class Calculator(QWidget):
 
         if "Error!" in currentInput.text():
             currentInput.setText(currentInput.text()[:len(currentInput.text())-len("Error!")])
-
+        elif "Error" in currentInput.text():
+            self.clearDisplays()
         if key == '=':
             if display.text().find("Error") is -1:
                 result = self.evalWithExcept(currentInput.text())
@@ -136,7 +137,7 @@ class Calculator(QWidget):
         else:
             currentInput.setText(currentInput.text() + key)
 
-        if key not in operatorList[:5] and key not in functionList[3:]:
+        if key not in operatorList[:5] and key:
             if currentInput.text():
                 result = self.evalWithExcept(currentInput.text())
                 display.setText(result)
