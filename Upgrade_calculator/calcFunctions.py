@@ -47,24 +47,18 @@ def romanToDec(numStr):
         romanNum = str(numStr)
         for num in romanNum:
             if num not in romanLetters:
-                raise ValueError
+                raise ValueError #원래 INDEXERROR였는데 바꿨어
     except ValueError:
         return 'Error!'
     # MMMCMXCIX = 3999
 
     result = 0
     for i in range(len(romanNum)):
-        n = 0
+        n = 1
         index = romanLetters.index(romanNum[i])
-        if i+1 <= len(romanNum)-1:
-            if (romanNum[i] + romanNum[i+1]) in romanLetters:
-                n = romans[index][0] * (-1)
-            else:
-                n = romans[index][0]
+        if i+1 <= len(romanNum)-1 and (romanNum[i] + romanNum[i+1]) in romanLetters:
+            n = (-1)
         else:
-            n = romans[index][0]
-
-        result += n
-
-
+            n = 1
+        result += romans[index][0] * n
     return str(result)

@@ -89,8 +89,8 @@ class Calculator(QWidget):
 
         if "Error!" in currentInput.text():
             currentInput.setText(currentInput.text()[:len(currentInput.text())-len("Error!")])
-        elif "Error" in currentInput.text():
-            self.clearDisplays()
+        #elif "Error" in currentInput.text():
+         #   self.clearDisplays()
         if key == '=':
             if display.text().find("Error") is -1:
                 result = self.evalWithExcept(currentInput.text())
@@ -115,23 +115,6 @@ class Calculator(QWidget):
             currentInput.setText(display.text() + constantMap[key])
 
         elif key in functionList:
-            """complimentString = ""
-            n = "default"
-            for i in range(len(currentInput.text())-1, -1, -1):
-                if len(currentInput.text()) == 1:
-                    n = currentInput.text()[i]
-                    break
-                elif currentInput.text().isdigit():
-                    n=currentInput.text()
-                    break
-                elif currentInput.text()[i] not in numPadList and currentInput.text()[i] not in romanLetters:
-                    n = currentInput.text()[i+1:]
-                    complimentString = currentInput.text()[:i+1]
-                    break
-            if n == "default":
-                n = currentInput.text()
-            value = functionMap[functionList.index(key)][1](n)
-            currentInput.setText(complimentString + value)"""
             result = self.evalWithExcept(currentInput.text())
             currentInput.setText(functionMap[functionList.index(key)][1](result))
         else:
