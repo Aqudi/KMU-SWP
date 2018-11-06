@@ -10,9 +10,14 @@ class Word:
         self.words = []
         for word in lines:
             self.words.append(word)
+        print('%d words in DB' % len(self.words))
+
 
     def test(self):
-        pass
+        for word in self.words:
+            print(word)
+
 
     def randFromDB(self):
-        pass
+        r = random.randrange(len(self.words))
+        return self.words[r]
