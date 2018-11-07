@@ -9,7 +9,7 @@ class TextUI:
 
     def display(self):
         # 결과가 맞는지 틀렸는지 사용자에게 전달
-        print("Word: ", self.GuessObject.word)
+        #print("Word: ", self.GuessObject.word)
         print(self.hangmanObject.getPicture())
         shownString = " ".join(self.GuessObject.shownList)
         print("Life: ", self.hangmanObject.getLife())
