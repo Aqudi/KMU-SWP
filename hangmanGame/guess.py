@@ -4,11 +4,10 @@ class Guess:
         # 랜덤으로 뽑은 단어를 설정해서 저장해두기
         self.word = word
         self.lengthOfWord = len(self.word)
-        self.shownString = "_" * self.lengthOfWord
-
-    def display(self):
-        # 결과가 맞는지 틀렸는지 사용자에게 전달
-        print("Word {}: {}".format(self.lengthOfWord, self.lengthOfWord))
+        self.shownList = []
+        self.guessedList = []
+        for i in range(self.lengthOfWord):
+            self.shownList.append("_")
 
 
     def guess(self, character):
@@ -16,7 +15,8 @@ class Guess:
         if character in self.word:
             indexList = [character]
             for i in range(self.lengthOfWord):
-                if self.shownString[i] == character:
+                if self.shownList[i] == character:
                     indexList.append(i)
+            self.guessedList.append(indexList)
             return indexList
         return False
