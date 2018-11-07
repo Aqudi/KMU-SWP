@@ -95,10 +95,14 @@ class Hangman:
 
     ]
 
+    def __init__(self):
+        self.life = len(self.text) - 1
 
     def getLife(self):
-        return len(self.text) - 1
+        return self.life
 
+    def getPicture(self):
+        return self.text[self.life]
 
-    def get(self, life):
-        return self.text[life]
+    def minusLife(self):
+        self.life -= 1
