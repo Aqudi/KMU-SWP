@@ -9,6 +9,7 @@ class Word:
 
         self.words = []
         for word in lines:
+            word = word.rstrip()
             self.words.append(word)
         print('%d words in DB' % len(self.words))
 
