@@ -10,10 +10,10 @@ class TextUI:
     def display(self):
         # 결과가 맞는지 틀렸는지 사용자에게 전달
         print("Word: ", self.GuessObject.word)
-        print("Life: ", self.hangmanObject.getLife())
         print(self.hangmanObject.getPicture())
         shownString = " ".join(self.GuessObject.shownList)
-        print("Word ({}): {}".format(self.GuessObject.lengthOfWord, shownString))
+        print("Life: ", self.hangmanObject.getLife())
+        print("Word({}): {}".format(self.GuessObject.lengthOfWord, shownString))
         print()
 
     def endOfGame(self, isFinished):
@@ -21,15 +21,13 @@ class TextUI:
             print("""
             =========================================
             =================Success=================
-            =========================================
-            """)
+            =========================================""")
         else:
             print("""
             =========================================
             ===================Fail==================
             =========================================
-            Answer Word = {}
-            """.format(self.GuessObject.word))
+            Answer Word = {}""".format(self.GuessObject.word))
 
     def errorPrint(self, errorMsg):
         print(errorMsg)
