@@ -13,12 +13,21 @@ def gameMain():
 
     while hangman.getLife() > 0:
         guessedChar = input("Select a letter: ")
-        isFinished = guess.guess(guessedChar)
 
-        if len(guessedChar) is not 1:
-            UI.errorPrint("Input just one character")
-        elif isFinished is False:
-            hangman.minusLife()
+        if guessedChar in guess.guessedList:
+            UI.errorPrint("""
+            =================================
+            =====Input another character=====
+            =================================""")
+        elif len(guessedChar) is not 1:
+            UI.errorPrint("""
+            =================================
+            =====Input just one character====
+            =================================""")
+        else:
+            isFinished = guess.guess(guessedChar)
+            if isFinished is False:
+                hangman.minusLife()
 
         UI.display()
         if isFinished == True:
