@@ -9,30 +9,30 @@ def gameMain():
     hangman = Hangman()
     UI = TextUI(guess, hangman)
 
-    isFinished = False
-
     while hangman.getLife() > 0:
         guessedChar = input("Select a letter: ")
-
+        # 잘못된 입력에 대한 처리
+        if len(guessedChar) is not 1:
+            UI.errorPrint("""
+            =================================
+            =====Input just one character====
+            =================================""")
+            continue
         if guessedChar in guess.guessedList:
             UI.errorPrint("""
             =================================
             =====Input another character=====
             =================================""")
-        elif len(guessedChar) is not 1:
-            UI.errorPrint("""
-            =================================
-            =====Input just one character====
-            =================================""")
-        else:
-            isFinished = guess.guess(guessedChar)
-            if isFinished is False:
-                hangman.minusLife()
-
-        UI.display()
-        if isFinished == True:
+            continue
+        # Guess결과에 따른 처
+        result = guess.guess(guessedChar)
+        if result is True:
             break
-    UI.endOfGame(isFinished)
+        if result is False:
+            hangman.minusLife()
+        UI.display()
+    UI.display()
+    UI.endOfGame(hangman.getLife())
 
 
 if __name__ == "__main__":
