@@ -24,11 +24,11 @@ def gameMain():
             =====Input another character=====
             =================================""")
             continue
-        # Guess결과에 따른 처
+        # Guess결과에 따른 처리
         result = guess.guess(guessedChar)
-        if result is True:
+        if result is 1:
             break
-        if result is False:
+        if result is 0:
             hangman.minusLife()
         UI.display()
     UI.display()
