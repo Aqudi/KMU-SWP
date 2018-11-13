@@ -55,10 +55,7 @@ def romanToDec(numStr):
     result = 0
     for i in range(len(romanNum)):
         n = 1
-        index = romanLetters.index(romanNum[i])
         if i+1 <= len(romanNum)-1 and (romanNum[i] + romanNum[i+1]) in romanLetters:
             n = (-1)
-        else:
-            n = 1
-        result += romans[index][0] * n
+        result += romans[romanLetters.index(romanNum[i])][0] * n
     return str(result)
