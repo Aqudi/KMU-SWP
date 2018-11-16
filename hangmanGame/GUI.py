@@ -7,7 +7,7 @@ from guess import Guess
 from hangman import Hangman
 
 
-class TextEdit(QTextEdit):
+class LineEdit(QLineEdit):
     def __init__(self):
         super().__init__()
         self.setReadOnly(True)
@@ -20,8 +20,8 @@ class TextEdit(QTextEdit):
 class ToolButton(QToolButton):
     def __init__(self, name, callback):
         super().__init__()
-        self.guessButton.setText(name)
-        self.guessButton.clicked.connect(callback)
+        self.setText(name)
+        self.clicked.connect(callback)
 
 
 class GraphicUI(QWidget):
@@ -32,16 +32,46 @@ class GraphicUI(QWidget):
         self.hangman = Hangman
 
         # Hangman display window
-        self.hangmanWindow = TextEdit()
+        self.hangmanWindow = QTextEdit()
+        self.hangmanWindow.setReadOnly(True)
+        self.hangmanWindow.setAlignment(Qt.AlignLeft)
+        font = self.hangmanWindow.font()
+        font.setFamily('Courier New')
+        self.hangmanWindow.setFont(font)
 
-        # Layout
+        # Hangman Layout
         hangmanLayout = QGridLayout()
         hangmanLayout.addWidget(self.hangmanWindow, 0, 0)
+
+        # Widget displaying current status
+        self.currentWord = LineEdit()
+        font.setPointSize(font.pointSize() + 8)
+        self.currentWord.setFont(font)
+
+        # Widget displaying already used chracters
+        self.guessedChars = LineEdit()
+        self.guessedChars.setMaxLength(52)
+
+        # Widget displaying message output
+        self.message = LineEdit()
+        self.message.setMaxLength(52)
+
+        # Widget user inputting character
+        self.charInput = LineEdit()
+        self.charInput.setMaxLength(1)
+
+        # Status Layout
+        statusLayout = QGridLayout()
+        statusLayout.addWidget(self.currentWord, 0, 0, 1, 2)
+        statusLayout.addWidget(self.guessedChars, 1, 0, 1, 2)
+        statusLayout.addWidget(self.message, 2, 0, 1, 2)
+        statusLayout.addWidget(self.charInput, 3, 0)
 
         # Main Layout
         mainLayout = QGridLayout()
         mainLayout.setSizeConstraint(QLayout.SetFixedSize)
         mainLayout.addLayout(hangmanLayout, 0, 0)
+        mainLayout.addLayout(statusLayout, 0, 1)
 
         self.setLayout(mainLayout)
 
