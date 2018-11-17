@@ -22,6 +22,19 @@ class Guess:
                 return 2
         return 0
 
+    def getImpormationOfWord(self, impormation):
+        if impormation is "length":
+            return self.lengthOfWord
+        if impormation is "word":
+            return self.word
+        return -1
+
+    def getShownString(self):
+        return " ".join(self.shownList)
+
+    def getGuessed(self):
+        return " ".join(self.guessedList)
+
 if __name__ == "__main__":
     c = Guess("abcdaeaf")
     print(c.shownList)
