@@ -26,12 +26,8 @@ class ToolButton(QToolButton):
 
 class GraphicUI(QWidget):
 
-    def __init__(self, GuessObject, hangmanObject, parent=None):
+    def __init__(self, parent=None):
         super().__init__(parent)
-
-        # Objects for getting impormation
-        self.GuessObject = GuessObject
-        self.hangmanObject = hangmanObject
         self.result = 2 # default status 2 means incorrect but not fail
 
         # Hangman display window
@@ -66,10 +62,11 @@ class GraphicUI(QWidget):
 
         # Guess Button
         self.guessButton = ToolButton('Guess!', self.guessClicked)
+        self.guessButton.setEnabled(False)
 
         # new game Button
         self.newGameButton = ToolButton('New Game', self.newGameClicked)
-        self.newGameButton.setEnabled(False)
+        self.newGameButton.setEnabled(True)
 
         # Status Layout
         statusLayout = QGridLayout()
@@ -89,8 +86,6 @@ class GraphicUI(QWidget):
         self.setLayout(mainLayout)
 
         self.setWindowTitle('Hangman Game')
-
-        self.display()
 
     def display(self):
         self.hangmanWindow.setPlaceholderText(self.hangmanObject.getPicture())
@@ -125,17 +120,24 @@ class GraphicUI(QWidget):
             return self.message.setText("Game Over '{}'".format(self.GuessObject.getWord('word')))
 
     def newGameClicked(self):
-        pass
+        from word import Word
+        word = Word('words.txt')
+        self.GuessObject = Guess(word.randFromDB())
+        self.hangmanObject = Hangman()
+
+        self.guessButton.setEnabled(True)
+        self.newGameButton.setEnabled(False)
+
+        self.charInput.clear()
+        self.message.clear()
+        self.currentWord.clear()
+        self.display()
 
 
 if __name__ == '__main__':
-    from guess import Guess
-    from hangman import Hangman
     import sys
 
     app = QApplication(sys.argv)
-    g = Guess("abcdefg")
-    h = Hangman()
-    game = GraphicUI(g, h)
+    game = GraphicUI()
     game.show()
     sys.exit(app.exec_())
