@@ -69,6 +69,7 @@ class GraphicUI(QWidget):
 
         # new game Button
         self.newGameButton = ToolButton('New Game', self.newGameClicked)
+        self.newGameButton.setEnabled(False)
 
         # Status Layout
         statusLayout = QGridLayout()
@@ -93,25 +94,35 @@ class GraphicUI(QWidget):
 
     def display(self):
         self.hangmanWindow.setPlaceholderText(self.hangmanObject.getPicture())
-        self.setCurrentWord(self.GuessObject.getShownString())
-        self.setGuessedChars(self.GuessObject.getGuessedString())
-
-    def setCurrentWord(self, string):
-        self.currentWord.setText(string)
-
-    def setGuessedChars(self, string):
-        self.guessedChars.setText(string)
-
-    def setMessage(self, string):
-        self.message.setText(string)
+        self.currentWord.setText(self.GuessObject.getShownString())
+        self.guessedChars.setText(" ".join(self.GuessObject.getGuessedList()))
 
     def guessClicked(self):
-        self.result = self.GuessObject.guess(self.charInput.text())
+        guessedChar = self.charInput.text()
         self.charInput.clear()
-        self.display()
+        self.message.clear()
+        self.newGameButton.setEnabled(True)
 
-    def getResult(self):
-        return self.result
+        if len(guessedChar) != 1:
+            return self.message.setText("Input just one chracter")
+        if not guessedChar.isalpha:
+            return self.message.setText("Input Alphabet")
+        if guessedChar in self.GuessObject.getGuessedList():
+            return self.message.setText("Input another chracter")
+
+        result = self.GuessObject.guess(guessedChar)
+
+        if result is 1:
+            self.guessButton.setEnabled(False)
+            self.message.setText("Success")
+        if result is 0:
+            self.hangmanObject.minusLife()
+
+        self.display()
+        if self.hangmanObject.getLife() <= 0:
+            self.guessButton.setEnabled(False)
+            self.newGameButton.setEnabled(True)
+            return self.message.setText("Game Over '{}'".format(self.GuessObject.getWord('word')))
 
     def newGameClicked(self):
         pass
