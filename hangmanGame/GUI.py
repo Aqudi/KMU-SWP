@@ -59,6 +59,13 @@ class GraphicUI(QWidget):
         # Widget user inputting character
         self.charInput = LineEdit()
         self.charInput.setMaxLength(1)
+        self.charInput.setReadOnly(False)
+
+        # Guess Button
+        self.guessButton = ToolButton('Guess!', self.guessClicked)
+
+        # new game Button
+        self.newGameButton = ToolButton('New Game', self.startGame)
 
         # Status Layout
         statusLayout = QGridLayout()
@@ -66,6 +73,8 @@ class GraphicUI(QWidget):
         statusLayout.addWidget(self.guessedChars, 1, 0, 1, 2)
         statusLayout.addWidget(self.message, 2, 0, 1, 2)
         statusLayout.addWidget(self.charInput, 3, 0)
+        statusLayout.addWidget(self.guessButton, 3, 1)
+        statusLayout.addWidget(self.newGameButton, 4, 0)
 
         # Main Layout
         mainLayout = QGridLayout()
@@ -77,6 +86,11 @@ class GraphicUI(QWidget):
 
         self.setWindowTitle('Hangman Game')
 
+    def startGame(self):
+        pass
+
+    def guessClicked(self):
+        pass
 
 
 if __name__ == '__main__':
