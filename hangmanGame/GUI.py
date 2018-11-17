@@ -26,10 +26,13 @@ class ToolButton(QToolButton):
 
 class GraphicUI(QWidget):
 
-    def __init__(self, parent=None):
+    def __init__(self, GuessObject, hangmanObject, parent=None):
         super().__init__(parent)
-        self.guess = Guess
-        self.hangman = Hangman
+
+        # Objects for getting impormation
+        self.GuessObject = GuessObject
+        self.hangmanObject = hangmanObject
+        self.result = 2 # default status 2 means incorrect but not fail
 
         # Hangman display window
         self.hangmanWindow = QTextEdit()
@@ -65,7 +68,7 @@ class GraphicUI(QWidget):
         self.guessButton = ToolButton('Guess!', self.guessClicked)
 
         # new game Button
-        self.newGameButton = ToolButton('New Game', self.startGame)
+        self.newGameButton = ToolButton('New Game', self.newGameClicked)
 
         # Status Layout
         statusLayout = QGridLayout()
@@ -86,17 +89,42 @@ class GraphicUI(QWidget):
 
         self.setWindowTitle('Hangman Game')
 
-    def startGame(self):
-        pass
+        self.display()
+
+    def display(self):
+        self.hangmanWindow.setPlaceholderText(self.hangmanObject.getPicture())
+        self.setCurrentWord(self.GuessObject.getShownString())
+        self.setGuessedChars(self.GuessObject.getGuessedString())
+
+    def setCurrentWord(self, string):
+        self.currentWord.setText(string)
+
+    def setGuessedChars(self, string):
+        self.guessedChars.setText(string)
+
+    def setMessage(self, string):
+        self.message.setText(string)
 
     def guessClicked(self):
+        self.result = self.GuessObject.guess(self.charInput.text())
+        self.charInput.clear()
+        self.display()
+
+    def getResult(self):
+        return self.result
+
+    def newGameClicked(self):
         pass
 
 
 if __name__ == '__main__':
-
+    from guess import Guess
+    from hangman import Hangman
     import sys
+
     app = QApplication(sys.argv)
-    game = GraphicUI()
+    g = Guess("abcdefg")
+    h = Hangman()
+    game = GraphicUI(g, h)
     game.show()
     sys.exit(app.exec_())
