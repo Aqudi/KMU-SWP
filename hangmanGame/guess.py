@@ -32,7 +32,7 @@ class Guess:
     def getShownString(self):
         return " ".join(self.shownList)
 
-    def getGuessed(self):
+    def getGuessedString(self):
         return " ".join(self.guessedList)
 
 if __name__ == "__main__":

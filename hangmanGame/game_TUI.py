@@ -24,7 +24,7 @@ def gameMain():
             =====Input just one character====
             =================================""")
             continue
-        if guessedChar in guess.getGuessedList():
+        if guessedChar in guess.getGuessedString():
             UI.errorPrint("""
             =================================
             =====Input another character=====
