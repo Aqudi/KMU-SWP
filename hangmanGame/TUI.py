@@ -1,6 +1,3 @@
-from guess import Guess
-from hangman import Hangman
-
 class TextUI:
     def __init__(self, GuessObject, hangmanObject):
         self.GuessObject = GuessObject
@@ -37,6 +34,8 @@ class TextUI:
 
 
 if __name__ == "__main__":
+    from guess import Guess
+    from hangman import Hangman
     c = Guess("abesateda")
     h = Hangman()
     print(c.shownList)
